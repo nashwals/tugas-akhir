@@ -1,2 +1,7 @@
-# Project Title
-This is the short explanation about the title of the project.
+# Analisis Pola Burnout ...
+
+## Supervisor: Martin Clinton Tosima Manullang, Ph.D.
+
+### Identitas Mahasiswa
+- Nama  : Nashwa Putri Laisya
+- NIM   : 122140180
