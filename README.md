@@ -1,6 +1,6 @@
 # Analisis Pola Burnout ...
 
-## Supervisor: Martin Clinton Tosima Manullang, Ph.D.
+### Supervisor: Martin Clinton Tosima Manullang, Ph.D.
 
 ### Identitas Mahasiswa
 - Nama  : Nashwa Putri Laisya
