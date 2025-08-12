@@ -5,13 +5,13 @@
 
 ## August 2025
 
-### August 1st, 2025
+#### August 1st, 2025
 - Bimbingan pertama
 
-### August 4th, 2025
+#### August 4th, 2025
 - Riset alternatif SAQ Stress Scale
 
-### August 12th, 2025
+#### August 12th, 2025
 - Riset alternatif SAQ Stress Scale
 - Riset paper sejenis
 - Membuat draft kuesioner
