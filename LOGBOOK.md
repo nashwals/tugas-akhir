@@ -9,4 +9,9 @@
 - Bimbingan pertama
 
 ### August 4th, 2025
-- Riset alternatif perhitungan skala stress
+- Riset alternatif SAQ Stress Scale
+
+### August 12th, 2025
+- Riset alternatif SAQ Stress Scale
+- Riset paper sejenis
+- Membuat draft kuesioner

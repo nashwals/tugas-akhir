@@ -1,4 +1,4 @@
-# Analisis Pola Burnout ...
+# Analisis Pola ... Menggunakan Metode Traditional Machine Learning - Studi Kasus: Dosen ITERA
 
 ### Supervisor: Martin Clinton Tosima Manullang, Ph.D.
 
