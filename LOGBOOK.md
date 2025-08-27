@@ -15,3 +15,11 @@
 - Riset alternatif SAQ Stress Scale
 - Riset paper sejenis
 - Membuat draft kuesioner
+
+### August 26th, 2025
+- Membuat contoh pertanyaan dari beberapa metode SAQ tertentu
+
+### August 27th, 2025
+- Membuat ulang draft kuesioner
+- Cross-check draft kuesioner dengan 2 orang
+- Membuat draft consent form
