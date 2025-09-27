@@ -13,7 +13,7 @@
 - Riset paper sejenis
 - Membuat draft kuesioner
 
-### 15 Agustus 2025
+#### 15 Agustus 2025
 - Bimbingan kedua
 
 #### 26 Agustus 2025
@@ -26,18 +26,18 @@
 
 ## September 2025
 
-### 2 September 2025
+#### 2 September 2025
 - Bimbingan ketiga
 
-### 7 September 2025
+#### 7 September 2025
 - Riset paper MBI-ES
 - Revisi consent form
 
-### 8 September 2025
+#### 8 September 2025
 - Membuat form kuesioner
 
-### 16 September 2025
+#### 16 September 2025
 - Bimbingan keempat
 
-### 21 September 2025
+#### 21 September 2025
 - Membuat form kuesioner
