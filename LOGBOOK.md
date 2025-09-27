@@ -35,3 +35,9 @@
 
 ### 8 September 2025
 - Membuat form kuesioner
+
+### 16 September 2025
+- Bimbingan keempat
+
+### 21 September 2025
+- Membuat form kuesioner
