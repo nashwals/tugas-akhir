@@ -41,3 +41,14 @@
 
 #### 21 September 2025
 - Membuat form kuesioner
+
+## Oktober 2025
+
+#### 3 Oktober 2025
+- Membuat form kuesioner
+
+#### 4 Oktober 2025
+- Membuat PPT singkat
+
+#### 12 Oktober 2025
+- Revisi form kuesioner
