@@ -42,6 +42,9 @@
 #### 21 September 2025
 - Membuat form kuesioner
 
+#### 30 September 2025
+- Bimbingan kelima
+
 ## Oktober 2025
 
 #### 3 Oktober 2025
@@ -52,3 +55,6 @@
 
 #### 12 Oktober 2025
 - Revisi form kuesioner
+
+#### 13 Oktober 2025
+- Sebar kuesioner
