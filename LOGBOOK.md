@@ -58,3 +58,9 @@
 
 #### 13 Oktober 2025
 - Sebar kuesioner
+
+#### 23 Oktober 2025
+- Bimbingan keenam
+
+#### 27 Oktober 2025
+- Mulai coding
