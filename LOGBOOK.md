@@ -24,6 +24,8 @@
 - Cross-check draft kuesioner dengan 2 orang
 - Membuat draft consent form
 
+
+
 ## September 2025
 
 #### 2 September 2025
@@ -45,6 +47,8 @@
 #### 30 September 2025
 - Bimbingan kelima
 
+
+
 ## Oktober 2025
 
 #### 3 Oktober 2025
@@ -64,3 +68,13 @@
 
 #### 27 Oktober 2025
 - Mulai coding
+
+#### 31 Oktober 2025
+- Bimbingan ketujuh
+
+
+
+## November 2025
+
+#### 8 November 2025
+- Menambahkan kategori visualisasi pada codingan
