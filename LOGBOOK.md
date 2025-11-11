@@ -78,3 +78,7 @@
 
 #### 8 November 2025
 - Menambahkan kategori visualisasi pada codingan
+
+#### 11 November 2025
+- Bimbingan kedelapan
+- Memperbaiki code bagian visualisasi feature importance
