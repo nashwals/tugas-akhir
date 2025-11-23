@@ -82,3 +82,8 @@
 #### 11 November 2025
 - Bimbingan kedelapan
 - Memperbaiki code bagian visualisasi feature importance
+
+#### 23 November 2025
+- Revisi laporan
+- Sebar kuesioner ke luar ITERA
+- Menjalankan code untuk data terbaru
