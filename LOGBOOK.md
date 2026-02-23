@@ -87,3 +87,16 @@
 - Revisi laporan
 - Sebar kuesioner ke luar ITERA
 - Menjalankan code untuk data terbaru
+
+
+
+## Februari 2026
+
+#### 1 - 19 Februari 2026
+- Pengumpulan data
+- Revisi laporan Bab I & Bab III
+
+#### 20 - 23 Februari 2026
+- Revisi laporan Bab II
+- Hyperparameter tuning
+- Menambahkan Mean Regressor sebagai baseline pada code
