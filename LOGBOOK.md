@@ -100,3 +100,7 @@
 - Revisi laporan Bab II
 - Hyperparameter tuning
 - Menambahkan Mean Regressor sebagai baseline pada code
+
+#### 24 Februari 2026
+- Update dataset dan code
+- Mengerjakan laporan Bab IV
