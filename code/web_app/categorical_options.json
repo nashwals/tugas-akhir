@@ -1,0 +1,241 @@
+{
+  "jenis_kelamin": [
+    "Laki-laki",
+    "Perempuan"
+  ],
+  "kota_asal": [
+    "Bali",
+    "Banda Aceh",
+    "Bandar Lampung",
+    "Bandung",
+    "Bengkalis Riau",
+    "Bengkulu",
+    "Bogor",
+    "Bukittinggi",
+    "Busan",
+    "Cirebon",
+    "Jakarta",
+    "Kediri",
+    "Klaten",
+    "Kuningan",
+    "Kupang",
+    "Lampung",
+    "Lampung Selatan",
+    "Lima Puluh Kota",
+    "Madiun",
+    "Makassar",
+    "Malang",
+    "Manado",
+    "Medan",
+    "Metro",
+    "Mojokerto",
+    "Padang",
+    "Padangsidimpuan",
+    "Palembang",
+    "Pekanbaru",
+    "Pringsewu",
+    "Purwokerto",
+    "Salatiga",
+    "Semarang",
+    "Siak",
+    "Sidikalang",
+    "Solo",
+    "Sumedang",
+    "Tangerang",
+    "Tangerang Selatan",
+    "Tegal",
+    "Yogyakarta"
+  ],
+  "status_pernikahan": [
+    "Belum Menikah",
+    "Sudah Menikah",
+    "Cerai Hidup",
+    "Cerai Mati"
+  ],
+  "tinggal_sendiri": [
+    false,
+    true
+  ],
+  "tinggal_pasangan": [
+    false,
+    true
+  ],
+  "tinggal_anak": [
+    false,
+    true
+  ],
+  "tinggal_ortu": [
+    false,
+    true
+  ],
+  "tinggal_mertua": [
+    false,
+    true
+  ],
+  "tinggal_saudara": [
+    false,
+    true
+  ],
+  "tinggal_teman": [
+    false,
+    true
+  ],
+  "bidang": [
+    "Akuntansi",
+    "Arsitektur",
+    "Bahasa",
+    "Biologi",
+    "Bisnis Digital",
+    "Cybersecurity",
+    "Desain Komunikasi Visual",
+    "Ekonomi",
+    "Fisika",
+    "Gizi",
+    "Hadis",
+    "Hukum",
+    "Ilmu Kelautan",
+    "Ilmu Sosial",
+    "Keperawatan",
+    "Kesehatan",
+    "Kimia",
+    "Komunikasi",
+    "Manajemen",
+    "Marine Operation",
+    "Matematika",
+    "Optimasi",
+    "Pendidikan Bahasa Inggris",
+    "Pendidikan Pancasila",
+    "Perencanaan Wilayah dan Kota",
+    "Psikologi",
+    "Rekayasa Desain dan Manufaktur",
+    "Rekayasa Instrumentasi dan Automasi",
+    "Rekayasa Kehutanan",
+    "Sains Aktuaria",
+    "Sains Data",
+    "Sains Lingkungan Kelautan",
+    "Sistem Informasi Kesehatan & Lab AV Promosi Kesehatan",
+    "Sosiologi",
+    "Teknik Biomedik",
+    "Teknik Elektro",
+    "Teknik Fisika",
+    "Teknik Geofisika",
+    "Teknik Industri",
+    "Teknik Informatika",
+    "Teknik Kelautan",
+    "Teknik Lingkungan",
+    "Teknik Material",
+    "Teknik Mesin",
+    "Teknik Perkapalan",
+    "Teknik Perkeretaapian",
+    "Teknik Pertambangan",
+    "Teknik Sipil",
+    "Teknik Telekomunikasi",
+    "Teknologi Industri Pertanian",
+    "Teknologi Pangan",
+    "ilmu klmunikasi"
+  ],
+  "mode_bekerja": [
+    "On-site",
+    "Online",
+    "Hybrid"
+  ],
+  "jarak": [
+    "< 1 km",
+    "1 - 5 km",
+    "6 - 10 km",
+    "11 - 15 km",
+    "> 15 km"
+  ],
+  "jabatan_struktural": [
+    "Rektor / Wakil Rektor",
+    "Setingkat Dekan dan Kepala UPA / UPT",
+    "Setingkat Kaprodi dan Ketua KK",
+    "Setingkat Unit Lembaga dan Biro",
+    "Jabatan Struktural Lainnya",
+    "Non Jabatan Struktural"
+  ],
+  "jabatan_fungsional": [
+    "Non Jabatan Fungsional",
+    "Asisten Ahli",
+    "Lektor",
+    "Lektor Kepala",
+    "Guru Besar"
+  ],
+  "sertifikasi": [
+    "Belum Tersertifikasi",
+    "Sudah Tersertifikasi"
+  ],
+  "status_keaktifan": [
+    "Aktif",
+    "Tugas Belajar (di PDDikti)",
+    "Aktif (PDDikti) namun masih melakukan Tugas Belajar"
+  ],
+  "fisik_mata": [
+    false,
+    true
+  ],
+  "fisik_punggung": [
+    false,
+    true
+  ],
+  "fisik_tensi": [
+    false,
+    true
+  ],
+  "fisik_lemah": [
+    false,
+    true
+  ],
+  "fisik_kepala": [
+    false,
+    true
+  ],
+  "fisik_obesitas": [
+    false,
+    true
+  ],
+  "fisik_imun": [
+    false,
+    true
+  ],
+  "fisik_carpal": [
+    false,
+    true
+  ],
+  "mental_anxiety": [
+    false,
+    true
+  ],
+  "mental_burnout": [
+    false,
+    true
+  ],
+  "mental_depresi": [
+    false,
+    true
+  ],
+  "mental_distress": [
+    false,
+    true
+  ],
+  "mental_konsentrasi": [
+    false,
+    true
+  ],
+  "mental_insomnia": [
+    false,
+    true
+  ],
+  "mental_iritate": [
+    false,
+    true
+  ],
+  "mental_lelah": [
+    false,
+    true
+  ],
+  "mental_stres": [
+    false,
+    true
+  ]
+}

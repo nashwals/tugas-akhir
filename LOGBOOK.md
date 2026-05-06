@@ -90,7 +90,20 @@
 
 
 
+## Januari 2026
+
+#### 8 Januari 2026
+- Bimbingan ke-9
+
+#### 29 Januari 2026
+- Bimbingan ke-10
+
+
+
 ## Februari 2026
+
+#### 9 Februari 2026
+- Bimbingan ke-11
 
 #### 1 - 19 Februari 2026
 - Pengumpulan data
@@ -104,3 +117,34 @@
 #### 24 Februari 2026
 - Update dataset dan code
 - Mengerjakan laporan Bab IV
+
+
+
+## Maret 2026
+
+#### 2 Maret 2026
+- Revisi laporan
+- Implementasi website sederhana
+
+#### 4 Maret 2026
+- Perbaikan website
+
+
+
+## April 2026
+
+#### 21 April 2026
+- Bimbingan
+
+#### 29 April - 4 Mei 2026
+- Pengumpulan data
+
+
+
+## Mei 2026
+
+#### 5 Mei 2026
+- Update notebook (dengan dataset terbaru)
+
+#### 6 Mei 2026
+- Update web app

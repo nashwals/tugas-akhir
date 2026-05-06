@@ -1,0 +1,27 @@
+{
+  "best_model": "XGB",
+  "cv_r2_score": 0.29316593408584596,
+  "cv_scores_all_models": {
+    "Mean": -0.07843869217014673,
+    "LR": -0.19741590847027743,
+    "XGB": 0.29316593408584596,
+    "RFR": 0.2902838749117923,
+    "GBR": 0.2849316155044939,
+    "SVR": 0.27913608715307314
+  },
+  "feature_names": [
+    "work_life_balance",
+    "cat__mental_burnout_False",
+    "cat__mental_konsentrasi_False",
+    "cat__fisik_imun_False",
+    "cat__fisik_obesitas_False",
+    "cat__mental_stres_False",
+    "cat__kota_asal_Banda Aceh",
+    "cat__fisik_lemah_False",
+    "cat__mental_anxiety_False",
+    "cat__mental_distress_False"
+  ],
+  "n_features": 10,
+  "training_date": "2026-05-05 11:42:14.602109",
+  "description": "Burnout prediction model using ensemble methods"
+}

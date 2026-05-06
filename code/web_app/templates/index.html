@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Stres Dosen - Stress Prediction System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Sistem Estimasi Stres Dosen</h1>
+            <h2>Lecturer Stress Estimation System</h2>
+            <div class="model-info">
+                <p><strong>Model:</strong> {{ model_name }}</p>
+                <p><strong>Cross-Validated R²:</strong> {{ "%.4f"|format(model_performance.r2) }}</p>
+                <p><strong>Training Samples:</strong> {{ n_samples }}</p>
+            </div>
+        </header>
+
+        <div class="intro-section">
+            <h3>Tentang Sistem Ini (About This System)</h3>
+            <p>
+                Sistem ini menggunakan model statistik machine learning untuk memberikan estimasi tingkat stres 
+                berdasarkan berbagai faktor demografis, pekerjaan, dan kesehatan. Hasil estimasi bukan merupakan 
+                diagnosis klinis dan harus dikonsultasikan dengan profesional kesehatan mental untuk penilaian lebih lanjut.
+            </p>
+            <p>
+                <em>This system uses statistical machine learning models to provide stress level estimations based on 
+                demographic, work-related, and health factors. Results are not clinical diagnoses and should be 
+                consulted with mental health professionals for further assessment.</em>
+            </p>
+        </div>
+
+        <!-- Mode Selection -->
+        <div class="mode-selector">
+            <button type="button" class="mode-btn active" data-mode="predict" id="predictModeBtn">
+                <span class="mode-icon">🔮</span>
+                <span class="mode-title">Mode Estimasi</span>
+                <span class="mode-subtitle">Dapatkan estimasi skor stres Anda</span>
+            </button>
+            <button type="button" class="mode-btn" data-mode="contribute" id="contributeModeBtn">
+                <span class="mode-icon">🤝</span>
+                <span class="mode-title">Mode Kontribusi Penelitian</span>
+                <span class="mode-subtitle">Berkontribusi untuk peningkatan model</span>
+            </button>
+        </div>
+
+        <!-- Mode Descriptions -->
+        <div id="predictModeInfo" class="mode-info active">
+            <p><strong>Mode Estimasi:</strong> Isi form untuk mendapatkan estimasi skor stres berbasis model statistik. Data tidak akan disimpan (privacy-preserving).</p>
+            <p><em>Estimation Mode: Fill the form to get statistical stress score estimation. Data will NOT be saved (privacy-preserving).</em></p>
+        </div>
+        
+        <div id="contributeModeInfo" class="mode-info" style="display: none;">
+            <p><strong>Mode Kontribusi Penelitian:</strong> Selain mendapat estimasi, Anda akan menjawab 10 pertanyaan SOS-S untuk menghitung skor stres aktual. Data anonim akan disimpan dan dapat digunakan untuk pembaruan model melalui proses retraining terkontrol.</p>
+            <p><em>Research Contribution Mode: Besides estimation, you'll answer 10 SOS-S questions to calculate actual stress score. Anonymous data will be saved and can be used for model updates through controlled retraining processes.</em></p>
+        </div>
+
+        <form id="prediction-form">
+            <!-- Demographics Section -->
+            <div class="form-section">
+                <h3>📋 Data Demografi (Demographics)</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="usia">{{ feature_labels.usia }}: *</label>
+                        <input type="number" id="usia" name="usia" required min="20" max="70" step="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jenis_kelamin">{{ feature_labels.jenis_kelamin }}: *</label>
+                        <select id="jenis_kelamin" name="jenis_kelamin" required>
+                            <option value="">Pilih...</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="kota_asal">{{ feature_labels.kota_asal }}: *</label>
+                        <input type="text" id="kota_asal" name="kota_asal" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status_pernikahan">{{ feature_labels.status_pernikahan }}: *</label>
+                        <select id="status_pernikahan" name="status_pernikahan" required>
+                            <option value="">Pilih...</option>
+                            <option value="Belum Menikah">Belum Menikah</option>
+                            <option value="Sudah Menikah">Sudah Menikah</option>
+                            <option value="Cerai Hidup">Cerai Hidup</option>
+                            <option value="Cerai Mati">Cerai Mati</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jumlah_anak">{{ feature_labels.jumlah_anak }}: *</label>
+                        <input type="number" id="jumlah_anak" name="jumlah_anak" required min="0" max="10" step="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="usia_anak">{{ feature_labels.usia_anak }}: *</label>
+                        <input type="number" id="usia_anak" name="usia_anak" required min="0" max="40" step="0.1" placeholder="0 jika tidak punya anak">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Living Situation Section -->
+            <div class="form-section">
+                <h3>🏠 Situasi Tempat Tinggal (Living Situation)</h3>
+                <p class="section-note">Pilih semua yang sesuai (Select all that apply)</p>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_sendiri" name="tinggal_sendiri" value="TRUE">
+                        <label for="tinggal_sendiri">{{ feature_labels.tinggal_sendiri }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_pasangan" name="tinggal_pasangan" value="TRUE">
+                        <label for="tinggal_pasangan">{{ feature_labels.tinggal_pasangan }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_anak" name="tinggal_anak" value="TRUE">
+                        <label for="tinggal_anak">{{ feature_labels.tinggal_anak }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_ortu" name="tinggal_ortu" value="TRUE">
+                        <label for="tinggal_ortu">{{ feature_labels.tinggal_ortu }}</label>
+                    </div>
+                </div>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_mertua" name="tinggal_mertua" value="TRUE">
+                        <label for="tinggal_mertua">{{ feature_labels.tinggal_mertua }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_saudara" name="tinggal_saudara" value="TRUE">
+                        <label for="tinggal_saudara">{{ feature_labels.tinggal_saudara }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="tinggal_teman" name="tinggal_teman" value="TRUE">
+                        <label for="tinggal_teman">{{ feature_labels.tinggal_teman }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work & Career Section -->
+            <div class="form-section">
+                <h3>💼 Pekerjaan & Karier (Work & Career)</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bidang">{{ feature_labels.bidang }}: *</label>
+                        <input type="text" id="bidang" name="bidang" required placeholder="e.g., Teknik Informatika">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lama_bekerja">{{ feature_labels.lama_bekerja }}: *</label>
+                        <input type="number" id="lama_bekerja" name="lama_bekerja" required min="0" max="40" step="1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mode_bekerja">{{ feature_labels.mode_bekerja }}: *</label>
+                        <select id="mode_bekerja" name="mode_bekerja" required>
+                            <option value="">Pilih...</option>
+                            <option value="On-site">On-site</option>
+                            <option value="Online">Online</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jarak">{{ feature_labels.jarak }}: *</label>
+                        <select id="jarak" name="jarak" required>
+                            <option value="">Pilih...</option>
+                            <option value="< 1 km">&lt; 1 km</option>
+                            <option value="1 - 5 km">1 - 5 km</option>
+                            <option value="6 - 10 km">6 - 10 km</option>
+                            <option value="11 - 15 km">11 - 15 km</option>
+                            <option value="> 15 km">&gt; 15 km</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="waktu_bekerja_seminggu">{{ feature_labels.waktu_bekerja_seminggu }}: *</label>
+                        <input type="number" id="waktu_bekerja_seminggu" name="waktu_bekerja_seminggu" required min="0" max="168" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="beban_sks">{{ feature_labels.beban_sks }}: *</label>
+                        <input type="number" id="beban_sks" name="beban_sks" required min="0" max="100" step="0.01">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mhs_bimbingan">{{ feature_labels.mhs_bimbingan }}: *</label>
+                        <input type="number" id="mhs_bimbingan" name="mhs_bimbingan" required min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jabatan_struktural">{{ feature_labels.jabatan_struktural }}: *</label>
+                        <select id="jabatan_struktural" name="jabatan_struktural" required>
+                            <option value="">Pilih...</option>
+                            <option value="Rektor / Wakil Rektor">Rektor / Wakil Rektor</option>
+                            <option value="Setingkat Dekan dan Kepala UPA / UPT">Setingkat Dekan dan Kepala UPA / UPT</option>
+                            <option value="Setingkat Kaprodi dan Ketua KK">Setingkat Kaprodi dan Ketua KK</option>
+                            <option value="Setingkat Unit Lembaga dan Biro">Setingkat Unit Lembaga dan Biro</option>
+                            <option value="Jabatan Struktural Lainnya">Jabatan Struktural Lainnya</option>
+                            <option value="Non Jabatan Struktural">Non Jabatan Struktural</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jabatan_fungsional">{{ feature_labels.jabatan_fungsional }}: *</label>
+                        <select id="jabatan_fungsional" name="jabatan_fungsional" required>
+                            <option value="">Pilih...</option>
+                            <option value="Non Jabatan Fungsional">Non Jabatan Fungsional</option>
+                            <option value="Asisten Ahli">Asisten Ahli</option>
+                            <option value="Lektor">Lektor</option>
+                            <option value="Lektor Kepala">Lektor Kepala</option>
+                            <option value="Guru Besar">Guru Besar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sertifikasi">{{ feature_labels.sertifikasi }}: *</label>
+                        <select id="sertifikasi" name="sertifikasi" required>
+                            <option value="">Pilih...</option>
+                            <option value="Belum Tersertifikasi">Belum Tersertifikasi</option>
+                            <option value="Sudah Tersertifikasi">Sudah Tersertifikasi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="status_keaktifan">{{ feature_labels.status_keaktifan }}: *</label>
+                        <select id="status_keaktifan" name="status_keaktifan" required>
+                            <option value="">Pilih...</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Tugas Belajar (di PDDikti)">Tugas Belajar (di PDDikti)</option>
+                            <option value="Aktif (PDDikti) namun masih melakukan Tugas Belajar">Aktif (PDDikti) namun masih melakukan Tugas Belajar</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physical Health Section -->
+            <div class="form-section">
+                <h3>💪 Kesehatan Fisik (Physical Health)</h3>
+                <p class="section-note">Pilih jika Anda mengalami kondisi ini (Check if you experience these conditions)</p>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_mata" name="fisik_mata" value="TRUE">
+                        <label for="fisik_mata">{{ feature_labels.fisik_mata }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_punggung" name="fisik_punggung" value="TRUE">
+                        <label for="fisik_punggung">{{ feature_labels.fisik_punggung }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_tensi" name="fisik_tensi" value="TRUE">
+                        <label for="fisik_tensi">{{ feature_labels.fisik_tensi }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_lemah" name="fisik_lemah" value="TRUE">
+                        <label for="fisik_lemah">{{ feature_labels.fisik_lemah }}</label>
+                    </div>
+                </div>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_kepala" name="fisik_kepala" value="TRUE">
+                        <label for="fisik_kepala">{{ feature_labels.fisik_kepala }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_obesitas" name="fisik_obesitas" value="TRUE">
+                        <label for="fisik_obesitas">{{ feature_labels.fisik_obesitas }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_imun" name="fisik_imun" value="TRUE">
+                        <label for="fisik_imun">{{ feature_labels.fisik_imun }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fisik_carpal" name="fisik_carpal" value="TRUE">
+                        <label for="fisik_carpal">{{ feature_labels.fisik_carpal }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental Health Section -->
+            <div class="form-section">
+                <h3>🧘 Kesehatan Mental (Mental Health)</h3>
+                <p class="section-note">Pilih jika Anda mengalami kondisi ini (Check if you experience these conditions)</p>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_anxiety" name="mental_anxiety" value="TRUE">
+                        <label for="mental_anxiety">{{ feature_labels.mental_anxiety }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_burnout" name="mental_burnout" value="TRUE">
+                        <label for="mental_burnout">{{ feature_labels.mental_burnout }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_depresi" name="mental_depresi" value="TRUE">
+                        <label for="mental_depresi">{{ feature_labels.mental_depresi }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_distress" name="mental_distress" value="TRUE">
+                        <label for="mental_distress">{{ feature_labels.mental_distress }}</label>
+                    </div>
+                </div>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_konsentrasi" name="mental_konsentrasi" value="TRUE">
+                        <label for="mental_konsentrasi">{{ feature_labels.mental_konsentrasi }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_insomnia" name="mental_insomnia" value="TRUE">
+                        <label for="mental_insomnia">{{ feature_labels.mental_insomnia }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_iritate" name="mental_iritate" value="TRUE">
+                        <label for="mental_iritate">{{ feature_labels.mental_iritate }}</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_lelah" name="mental_lelah" value="TRUE">
+                        <label for="mental_lelah">{{ feature_labels.mental_lelah }}</label>
+                    </div>
+                </div>
+                
+                <div class="form-row checkbox-group">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="mental_stres" name="mental_stres" value="TRUE">
+                        <label for="mental_stres">{{ feature_labels.mental_stres }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work-Life Balance Section -->
+            <div class="form-section">
+                <h3>⚖️ Keseimbangan Hidup (Work-Life Balance)</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="work_life_balance">{{ feature_labels.work_life_balance }}: *</label>
+                        <select id="work_life_balance" name="work_life_balance" required>
+                            <option value="">Pilih...</option>
+                            <option value="1">1 - Sangat Buruk</option>
+                            <option value="2">2 - Buruk</option>
+                            <option value="3">3 - Cukup</option>
+                            <option value="4">4 - Baik</option>
+                            <option value="5">5 - Sangat Baik</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gaji_sesuai">{{ feature_labels.gaji_sesuai }}: *</label>
+                        <select id="gaji_sesuai" name="gaji_sesuai" required>
+                            <option value="">Pilih...</option>
+                            <option value="1">1 - Sangat Tidak Sesuai</option>
+                            <option value="2">2 - Tidak Sesuai</option>
+                            <option value="3">3 - Cukup Sesuai</option>
+                            <option value="4">4 - Sesuai</option>
+                            <option value="5">5 - Sangat Sesuai</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOS-S Questions Section (Only for Contribution Mode) -->
+            <div id="sos-section" class="form-section sos-section" style="display: none;">
+                <h3>📝 10 Pertanyaan Stres SOS-S (SOS-S Stress Questions)</h3>
+                <p class="section-note">
+                    <strong>Instruksi:</strong> Untuk setiap pertanyaan, pilih jawaban yang paling sesuai dengan pengalaman Anda dalam <strong>satu minggu terakhir</strong>.<br>
+                    <em>For each question, select the answer that best matches your experience in the <strong>last week</strong>.</em>
+                </p>
+                
+                <div class="pss-question">
+                    <label class="pss-label">1. Apakah selama minggu terakhir Anda merasa tidak mampu atau tidak memadai?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="1_tidak_mampu" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="1_tidak_mampu" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="1_tidak_mampu" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="1_tidak_mampu" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="1_tidak_mampu" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">2. Apakah selama minggu terakhir Anda merasa kewalahan oleh tanggung jawab Anda?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="2_kewalahan_tanggung_jawab" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="2_kewalahan_tanggung_jawab" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="2_kewalahan_tanggung_jawab" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="2_kewalahan_tanggung_jawab" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="2_kewalahan_tanggung_jawab" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">3. Apakah selama minggu terakhir Anda merasa keadaan tidak berpihak pada Anda?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="3_keadaan_tidak_berpihak" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="3_keadaan_tidak_berpihak" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="3_keadaan_tidak_berpihak" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="3_keadaan_tidak_berpihak" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="3_keadaan_tidak_berpihak" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">4. Apakah selama minggu terakhir Anda merasa waktu tidak pernah cukup?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="4_waktu_tidak_cukup" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="4_waktu_tidak_cukup" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="4_waktu_tidak_cukup" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="4_waktu_tidak_cukup" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="4_waktu_tidak_cukup" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">5. Apakah selama minggu terakhir Anda merasa tidak ada yang berjalan dengan baik?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="5_tidak_berjalan_baik" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="5_tidak_berjalan_baik" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="5_tidak_berjalan_baik" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="5_tidak_berjalan_baik" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="5_tidak_berjalan_baik" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">6. Apakah selama minggu terakhir Anda merasa terburu-buru?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="6_terburu_buru" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="6_terburu_buru" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="6_terburu_buru" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="6_terburu_buru" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="6_terburu_buru" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">7. Apakah selama minggu terakhir Anda merasa tidak ada jalan keluar?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="7_tidak_ada_jalan_keluar" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="7_tidak_ada_jalan_keluar" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="7_tidak_ada_jalan_keluar" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="7_tidak_ada_jalan_keluar" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="7_tidak_ada_jalan_keluar" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">8. Apakah selama minggu terakhir Anda merasa masalah terus menumpuk?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="8_masalah_menumpuk" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="8_masalah_menumpuk" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="8_masalah_menumpuk" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="8_masalah_menumpuk" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="8_masalah_menumpuk" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">9. Apakah selama minggu terakhir Anda merasa ingin menyerah saja?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="9_ingin_menyerah" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="9_ingin_menyerah" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="9_ingin_menyerah" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="9_ingin_menyerah" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="9_ingin_menyerah" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+
+                <div class="pss-question">
+                    <label class="pss-label">10. Apakah selama minggu terakhir Anda merasa sedang memikul beban yang berat?</label>
+                    <div class="pss-options">
+                        <label><input type="radio" name="10_memikul_beban_berat" value="1" required> 1 - Sama sekali tidak</label>
+                        <label><input type="radio" name="10_memikul_beban_berat" value="2"> 2 - Jarang</label>
+                        <label><input type="radio" name="10_memikul_beban_berat" value="3"> 3 - Kadang-kadang</label>
+                        <label><input type="radio" name="10_memikul_beban_berat" value="4"> 4 - Sering</label>
+                        <label><input type="radio" name="10_memikul_beban_berat" value="5"> 5 - Sangat sering</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="button-group">
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span id="submitBtnText">🔮 Estimasi Skor Stres</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        <div id="result" class="result-container" style="display: none;">
+            <h3>📊 Hasil Prediksi (Prediction Result)</h3>
+            <div id="result-content"></div>
+        </div>
+
+        <footer>
+            <p id="footerText">
+                <em>Mode estimasi: Data tidak disimpan (privacy-preserving).<br>
+                Estimation mode: Data is not saved (privacy-preserving).</em>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85rem; color: #999;">
+                <strong>Disclaimer:</strong> Hasil estimasi adalah perhitungan statistik berbasis model machine learning, 
+                bukan diagnosis klinis. Untuk penilaian lebih lanjut, konsultasikan dengan profesional kesehatan mental.
+            </p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

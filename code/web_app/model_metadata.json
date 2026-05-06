@@ -1,0 +1,92 @@
+{
+  "model_name": "XGB",
+  "training_date": "2026-05-06 08:53:01",
+  "n_samples": 145,
+  "performance": {
+    "Mean": {
+      "r2": -0.07843869217014673,
+      "rmse": 8.850675450309867,
+      "mae": 7.419817677368212
+    },
+    "LR": {
+      "r2": -0.19741590847027743,
+      "rmse": 9.19927897947922,
+      "mae": 7.4644916417182925
+    },
+    "XGB": {
+      "r2": 0.29316593408584596,
+      "rmse": 7.1380300189384345,
+      "mae": 5.795039867532664
+    },
+    "RFR": {
+      "r2": 0.2902838749117923,
+      "rmse": 7.166050179003983,
+      "mae": 5.968727708783371
+    },
+    "GBR": {
+      "r2": 0.2849316155044939,
+      "rmse": 7.183621331593723,
+      "mae": 5.869482172483936
+    },
+    "SVR": {
+      "r2": 0.27913608715307314,
+      "rmse": 7.183815035759191,
+      "mae": 5.689420607493506
+    }
+  },
+  "best_params": {
+    "regressor__colsample_bytree": 1.0,
+    "regressor__learning_rate": 0.05,
+    "regressor__max_depth": 2,
+    "regressor__min_child_weight": 6,
+    "regressor__n_estimators": 50,
+    "regressor__subsample": 0.8
+  },
+  "numerical_features": [
+    "usia",
+    "jumlah_anak",
+    "usia_anak",
+    "lama_bekerja",
+    "waktu_bekerja_seminggu",
+    "beban_sks",
+    "mhs_bimbingan",
+    "work_life_balance",
+    "gaji_sesuai"
+  ],
+  "categorical_features": [
+    "jenis_kelamin",
+    "kota_asal",
+    "status_pernikahan",
+    "tinggal_sendiri",
+    "tinggal_pasangan",
+    "tinggal_anak",
+    "tinggal_ortu",
+    "tinggal_mertua",
+    "tinggal_saudara",
+    "tinggal_teman",
+    "bidang",
+    "mode_bekerja",
+    "jarak",
+    "jabatan_struktural",
+    "jabatan_fungsional",
+    "sertifikasi",
+    "status_keaktifan",
+    "fisik_mata",
+    "fisik_punggung",
+    "fisik_tensi",
+    "fisik_lemah",
+    "fisik_kepala",
+    "fisik_obesitas",
+    "fisik_imun",
+    "fisik_carpal",
+    "mental_anxiety",
+    "mental_burnout",
+    "mental_depresi",
+    "mental_distress",
+    "mental_konsentrasi",
+    "mental_insomnia",
+    "mental_iritate",
+    "mental_lelah",
+    "mental_stres"
+  ]
+}
