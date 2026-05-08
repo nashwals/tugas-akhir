@@ -84,7 +84,7 @@ def load_and_prepare_data(csv_path):
 def create_preprocessor(X):
     """Create preprocessing pipeline for numerical and categorical features"""
     numerical_features = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
-    categorical_features = X.select_dtypes(include=['object', 'bool']).columns.tolist()
+    categorical_features = X.select_dtypes(include=['object', 'str', 'bool']).columns.tolist()
     
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='median')),

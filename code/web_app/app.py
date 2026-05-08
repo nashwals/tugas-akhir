@@ -154,7 +154,7 @@ def validate_numerical_input(data):
 def handle_missing_values(df, metadata):
     """
     Handle missing values explicitly before prediction.
-    Fills with 0 for numerical, 'Unknown' for categorical.
+    Fills with 0 for numerical and 'Unknown' for categorical.
     """
     for feature in metadata['numerical_features']:
         if feature in df.columns:
@@ -162,7 +162,7 @@ def handle_missing_values(df, metadata):
     
     for feature in metadata['categorical_features']:
         if feature in df.columns:
-            df[feature] = df[feature].fillna('FALSE' if df[feature].dtype == 'object' else 'FALSE')
+            df[feature] = df[feature].fillna('Unknown')
     
     return df
 

@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
         switchMode('contribute');
     });
     
+    // Initialize the form to predict mode on page load
+    switchMode('predict');
+    
     function switchMode(mode) {
         currentMode = mode;
         
