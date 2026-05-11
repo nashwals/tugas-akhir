@@ -18,18 +18,28 @@ def merge_data():
     print("="*80 + "\n")
     
     # File paths
-    original_file = 'data/burnout_submissions.csv'
+    original_candidates = [
+        'data/submissions.csv',
+        'data/burnout_submissions.csv'
+    ]
     candidate_new_files = [
         'data/new_contributions.csv',
         'data/new_submissions.csv'
     ]
-    output_file = f'data/burnout_submissions_merged_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+    original_file = None
+    for candidate in original_candidates:
+        if os.path.exists(candidate):
+            original_file = candidate
+            break
+
+    if original_file is None:
+        print(f"❌ Error: Original file not found: {original_candidates[0]}")
+        return
+
+    original_stem = os.path.splitext(os.path.basename(original_file))[0]
+    output_file = f'data/{original_stem}_merged_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
     
     # Check if files exist
-    if not os.path.exists(original_file):
-        print(f"❌ Error: Original file not found: {original_file}")
-        return
-    
     new_file = None
     for candidate in candidate_new_files:
         if os.path.exists(candidate):

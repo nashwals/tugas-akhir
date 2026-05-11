@@ -30,10 +30,15 @@ data_stats = None
 def load_data_statistics():
     """Load and calculate statistics from training data"""
     try:
-        # Load training data
-        data_path = '../data/burnout_submissions.csv'
-        if os.path.exists(data_path):
-            df = pd.read_csv(data_path)
+        # Load training data (prefer the current notebook-aligned dataset)
+        data_candidates = ['../data/submissions.csv', '../data/burnout_submissions.csv']
+        df = None
+        for data_path in data_candidates:
+            if os.path.exists(data_path):
+                df = pd.read_csv(data_path)
+                break
+
+        if df is not None:
             
             if 'skor_total' in df.columns:
                 scores = df['skor_total'].dropna()
@@ -432,7 +437,7 @@ def save_contribution(data, predicted_score, actual_score):
     Data is stored without personal identifiers for research purposes.
     Auto-creates CSV files if they don't exist for robustness.
     """
-    main_dataset_file = '../data/burnout_submissions.csv'
+    main_dataset_file = '../data/submissions.csv'
     contributions_file = '../data/new_contributions.csv'
     
     # Ensure data directory exists

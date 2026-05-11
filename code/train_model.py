@@ -6,7 +6,7 @@ based on cross-validation performance. Designed for controlled retraining with u
 
 RETRAINING PROCESS (For Reproducibility):
 ------------------------------------------
-1. Ensure burnout_submissions.csv has sufficient data (recommended: 50+ samples)
+1. Ensure submissions.csv has sufficient data (recommended: 50+ samples)
 2. Run: python train_model.py
 3. Script will:
    - Train 6 different models with cross-validation
@@ -37,6 +37,7 @@ import joblib
 import json
 import os
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
@@ -44,7 +45,7 @@ from sklearn.preprocessing import OneHotEncoder, RobustScaler
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import RepeatedKFold, GridSearchCV
+from sklearn.model_selection import KFold, RepeatedKFold, GridSearchCV, cross_val_predict
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.inspection import permutation_importance
@@ -59,7 +60,7 @@ def load_and_prepare_data(csv_path):
     print("LOADING DATA")
     print(f"{'='*80}")
     
-    data = pd.read_csv(csv_path)
+    data = pd.read_csv(csv_path, on_bad_lines='skip', engine='python')
     print(f"✓ Loaded {len(data)} samples from {csv_path}")
     
     # Define features to drop (not used for prediction)
@@ -347,6 +348,39 @@ def save_feature_importance_comparison(models, X, y, output_path):
     print(f"✓ Feature importance saved: {output_path}")
 
 
+def plot_actual_vs_predicted(best_model, X, y, model_name, output_path=None):
+    """Create a cross-validated actual vs predicted scatter plot."""
+    cv_for_plot = KFold(n_splits=5, shuffle=True, random_state=2024)
+    y_pred = cross_val_predict(best_model, X, y, cv=cv_for_plot, n_jobs=-1)
+
+    plot_r2 = r2_score(y, y_pred)
+    plot_rmse = np.sqrt(mean_squared_error(y, y_pred))
+    plot_mae = np.mean(np.abs(y - y_pred))
+
+    plt.figure(figsize=(8, 8))
+    plt.scatter(y, y_pred, alpha=0.75, s=40, color="#1f77b4", edgecolors="white", linewidth=0.4)
+    min_value = min(y.min(), y_pred.min())
+    max_value = max(y.max(), y_pred.max())
+    plt.plot([min_value, max_value], [min_value, max_value], "r--", linewidth=2, label="Perfect prediction")
+    plt.xlabel("Actual skor_total", fontsize=12, fontweight="bold")
+    plt.ylabel("Predicted skor_total", fontsize=12, fontweight="bold")
+    plt.title(
+        f"Actual vs Predicted (5-Fold CV) - {model_name}\nR² = {plot_r2:.4f} | RMSE = {plot_rmse:.4f} | MAE = {plot_mae:.4f}",
+        fontsize=14,
+        fontweight="bold",
+        pad=20,
+    )
+    plt.legend()
+    plt.grid(alpha=0.3, linestyle="--")
+    plt.tight_layout()
+
+    if output_path:
+        plt.savefig(output_path, dpi=200, bbox_inches='tight')
+        print(f"✓ Actual vs predicted plot saved: {output_path}")
+
+    plt.show()
+
+
 def select_best_model(model_performance):
     """Select the best model based on R² score"""
     best = max(model_performance, key=lambda x: x['r2'])
@@ -443,7 +477,7 @@ def main():
     print("="*80)
     
     # Configuration
-    csv_path = 'data/burnout_submissions.csv'
+    csv_path = 'data/submissions.csv'
     output_dir = 'web_app'
     
     # Load data
@@ -474,6 +508,10 @@ def main():
     
     # Select best model
     best_model_name = select_best_model(model_performance)
+
+    # Save a cross-validated actual vs predicted plot for the best model
+    actual_predicted_plot_path = os.path.join(output_dir, 'actual_vs_predicted.png')
+    plot_actual_vs_predicted(best_models[best_model_name], X, y, best_model_name, actual_predicted_plot_path)
     
     # Save everything
     save_model_and_metadata(

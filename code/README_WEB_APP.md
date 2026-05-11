@@ -17,7 +17,7 @@ A flexible machine learning system that predicts lecturer stress levels and cont
 code/
 ├── train_model.py              # Train all models, select the best
 ├── data/
-│   ├── burnout_submissions.csv # Original training data (49 samples)
+│   ├── submissions.csv         # Original training data
 │   └── new_contributions.csv   # Collected data from web app
 └── web_app/
     ├── app.py                  # Flask web application
@@ -79,7 +79,7 @@ Open your browser: `http://127.0.0.1:5000`
 ## 📊 How It Works
 
 ### Initial Training
-1. **Data Loading**: Loads `burnout_submissions.csv` (49 samples)
+1. **Data Loading**: Loads `submissions.csv` (current training set)
 2. **Feature Engineering**: Processes 40+ features (demographics, work, health)
 3. **Model Training**: Trains multiple models with hyperparameter tuning
 4. **Model Selection**: Automatically selects best model based on R² score
@@ -99,7 +99,7 @@ When you have collected more data:
 python3 merge_data.py
 
 # Option 2: Or manually merge CSV files
-cat data/burnout_submissions.csv data/new_contributions.csv > data/combined_data.csv
+cat data/submissions.csv data/new_contributions.csv > data/combined_data.csv
 
 # Retrain with updated data
 python3 train_model.py
@@ -291,7 +291,7 @@ For questions or issues, please refer to:
 
 Track these as your system grows:
 
-| Metric | Initial (49 samples) | Goal (100+ samples) | Goal (500+ samples) |
+| Metric | Initial (current training set) | Goal (100+ samples) | Goal (500+ samples) |
 |--------|---------------------|---------------------|---------------------|
 | **R² Score** | ~0.82 (SVR) | > 0.85 | > 0.90 |
 | **MAE** | ~2.5 | < 2.0 | < 1.5 |

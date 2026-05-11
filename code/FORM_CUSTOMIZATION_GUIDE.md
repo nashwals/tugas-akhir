@@ -208,7 +208,7 @@ In `create_feature_labels()` function:
 
 **Step 3: Update training data**
 
-Add the column to `data/burnout_submissions.csv` with values for all rows.
+Add the column to `data/submissions.csv` with values for all rows.
 
 **Step 4: Retrain the model**
 ```bash
@@ -319,7 +319,7 @@ python3 app.py
 1. Edit web_app/templates/index.html
 2. Edit web_app/app.py (labels)
 3. Edit web_app/static/script.js (validation)
-4. Update data/burnout_submissions.csv structure
+4. Update data/submissions.csv structure
 5. Retrain: python3 train_model.py
 6. Restart: python3 app.py
 ```
@@ -354,7 +354,7 @@ web_app/
 ## 💡 Pro Tips
 
 ### Tip 1: Preview Options by Dataset Size
-Current `categorical_options.json` shows only values from your 49 training samples. As you collect more data, more options will appear automatically when you retrain.
+Current `categorical_options.json` shows only values from the current training samples. As you collect more data, more options will appear automatically when you retrain.
 
 ### Tip 2: Pre-populate Common Options
 Manually add common options now to make data collection easier:

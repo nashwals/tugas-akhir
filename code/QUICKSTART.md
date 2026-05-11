@@ -54,7 +54,7 @@ cd code
 python3 merge_data.py
 
 # 2. Review merged file, then replace original
-cp data/burnout_submissions_merged_*.csv data/burnout_submissions.csv
+cp data/submissions_merged_*.csv data/submissions.csv
 
 # 3. Retrain all models
 python3 train_model.py
@@ -71,7 +71,7 @@ python3 app.py
 | `train_model.py` | Train all models, select best |
 | `web_app/app.py` | Web application |
 | `merge_data.py` | Combine old + new data |
-| `data/burnout_submissions.csv` | Training data |
+| `data/submissions.csv` | Training data |
 | `data/new_contributions.csv` | Collected from web app |
 | `web_app/best_model.joblib` | Current best model |
 | `web_app/model_metadata.json` | Model info |
@@ -105,4 +105,4 @@ pip install -r requirements.txt
 
 ---
 
-**🎯 Goal**: Grow from 49 samples → 100+ → 500+ and watch the model improve!
+**🎯 Goal**: Grow from the current training set → 100+ → 500+ and watch the model improve!
