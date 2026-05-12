@@ -133,13 +133,18 @@ def validate_numerical_input(data):
     Returns (is_valid, error_message)
     """
     validations = {
-        'usia': (20, 70, 'Usia harus antara 20-70 tahun'),
-        'jumlah_anak': (0, 15, 'Jumlah anak harus antara 0-15'),
+        # Match frontend: usia min set to 18
+        'usia': (18, 70, 'Usia harus antara 18-70 tahun'),
+        # Frontend removed max for jumlah_anak -> enforce only minimum
+        'jumlah_anak': (0, None, 'Jumlah anak harus >= 0'),
         'usia_anak': (0, 50, 'Rata-rata usia anak harus antara 0-50 tahun'),
-        'lama_bekerja': (0, 50, 'Lama bekerja harus antara 0-50 tahun'),
+        # Frontend removed max for lama_bekerja -> enforce only minimum
+        'lama_bekerja': (0, None, 'Lama bekerja harus >= 0 tahun'),
         'waktu_bekerja_seminggu': (0, 168, 'Jam kerja per minggu harus antara 0-168'),
-        'beban_sks': (0, 100, 'Beban SKS harus antara 0-100'),
-        'mhs_bimbingan': (0, 200, 'Jumlah mahasiswa bimbingan harus antara 0-200'),
+        # Frontend removed max for beban_sks -> enforce only minimum
+        'beban_sks': (0, None, 'Beban SKS harus >= 0'),
+        # Allow no explicit upper bound for mhs_bimbingan (frontend may remove max)
+        'mhs_bimbingan': (0, None, 'Jumlah mahasiswa bimbingan harus >= 0'),
         'work_life_balance': (1, 5, 'Work-life balance harus antara 1-5'),
         'gaji_sesuai': (1, 5, 'Kesesuaian gaji harus antara 1-5')
     }
@@ -148,8 +153,13 @@ def validate_numerical_input(data):
         if field in data:
             try:
                 value = float(data[field])
-                if not (min_val <= value <= max_val):
-                    return False, f"{error_msg} (nilai: {value})"
+                # If max_val is None, only enforce minimum bound
+                if max_val is None:
+                    if value < min_val:
+                        return False, f"{error_msg} (nilai: {value})"
+                else:
+                    if not (min_val <= value <= max_val):
+                        return False, f"{error_msg} (nilai: {value})"
             except (ValueError, TypeError):
                 return False, f"{field} harus berupa angka"
     
